@@ -1,0 +1,82 @@
+server:
+  port: 8080
+jwt:
+  secret: 0746e44e-624f-453a-9ce9-0151c320ea6d
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+      default-filters:
+        - AddResponseHeader=Access-Control-Allow-Headers, Authorization, Content-Type
+      server:
+        webflux:
+          discovery:
+            locator:
+              enabled: false
+
+          globalcors:
+            add-to-simple-url-handler-mapping: true
+            corsConfigurations:
+              "[/**]":
+                allowedOrigins: "*"
+                allowedMethods: "*"
+                allowedHeaders: "*"
+
+          routes:
+            # ========== AUTH (NestJS) ==========
+
+            - id: auth-service-general
+              uri: http://localhost:9031
+              predicates:
+                - Path=/api/auth/**
+              filters:
+                - RewritePath=/api/auth/(?<segment>.*), /api/v1/${segment}
+
+            - id: auth-service-auth
+              uri: http://localhost:9031
+              predicates:
+                - Path=/api/auth/auth/**
+              filters:
+                - RewritePath=/api/auth/auth/(?<segment>.*), /api/v1/auth/${segment}
+
+            # ========== HABIT (Spring Boot) ==========
+            - id: habit-service
+              uri: http://localhost:9001
+              predicates:
+                - Path=/api/habit/**
+              filters:
+                - RewritePath=/api/habit/(?<segment>.*), /api/v1/${segment}
+
+            # ========== PROGRESS (Spring Boot) ==========
+            - id: progress-service
+              uri: http://localhost:9011
+              predicates:
+                - Path=/api/progress/**
+              filters:
+                - RewritePath=/api/progress/(?<segment>.*), /api/v1/${segment}
+
+            # ========== REPORT (Spring Boot) ==========
+            # - id: report-service
+            #   uri: http://localhost:9021
+            #   predicates:
+            #     - Path=/api/report/**
+            #   filters:
+            #     - RewritePath=/api/report/(?<segment>.*), /api/v1/${segment}
+
+            # ========== NOTIFY (NestJS) ==========
+            - id: notify-service
+              uri: http://localhost:9041
+              predicates:
+                - Path=/api/notify/**
+              filters:
+                - RewritePath=/api/notify/(?<segment>.*), /api/v1/${segment}
+
+            # ========== MEDIA (NestJS) ==========
+            # - id: media-service
+            #   uri: http://localhost:9051
+            #   predicates:
+            #     - Path=/api/media/**
+            #   filters:
+            #     - RewritePath=/api/media/(?<segment>.*), /api/v1/${segment}

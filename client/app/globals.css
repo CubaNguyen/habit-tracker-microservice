@@ -1,0 +1,134 @@
+@import "tailwindcss";
+
+@plugin "tailwindcss-animate";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+/* === Custom Scrollbar cho theme tối === */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #111; /* nền track tiệp màu app */
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #444, #222);
+  border-radius: 8px;
+  border: 2px solid #111; /* tạo khoảng cách nhỏ */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #555, #333);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #444 #111;
+}
+
+.border-b,
+.border-t,
+.border-l,
+.border-r,
+.border {
+  border-width: 0.5px;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+html,
+body {
+  @apply bg-[#171717] text-white;
+  height: 100%;
+}
+
+@layer base {
+  /* Toàn app bo góc nhẹ mặc định */
+  div,
+  button,
+  input,
+  textarea,
+  select,
+  img,
+  table,
+  td,
+  th {
+    @apply rounded-md;
+  }
+
+  /* Nếu phần tử có overflow, vẫn giữ bo góc */
+  [class*="overflow-"] {
+    @apply rounded-md;
+  }
+}
+/* React Day Picker – dark dropdown */
+.rdp-caption select,
+.rdp-caption select option,
+.rdp-dropdown,
+.rdp-dropdown option {
+  background-color: #121212 !important;
+  color: #e5e5e5 !important;
+  border: 1px solid #333 !important;
+  border-radius: 6px !important;
+}
+.rdp-caption select:focus {
+  outline: none;
+  border-color: #2563eb !important;
+}
+
+/* Bo góc mặc định cho khối lớn như card, section, main */
+main,
+section,
+article {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+:root {
+  --radius: 8px; /* bo góc mặc định cho toàn app */
+}

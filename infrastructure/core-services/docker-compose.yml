@@ -1,0 +1,68 @@
+version: "3.9"
+
+services:
+  ######################################
+  # 🧩 REDIS (notification + progress cache)
+  ######################################
+  redis:
+    image: redis:7
+    container_name: core_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  ######################################
+  # 🐇 RABBITMQ (event bus)
+  ######################################
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: core_rabbit
+    restart: unless-stopped
+    ports:
+      - "5672:5672" # AMQP
+      - "15672:15672" # Web UI
+    volumes:
+      - rabbit_data:/var/lib/rabbitmq
+
+  ######################################
+  # 🧭 CONFIG & DISCOVERY (Spring Cloud)
+  ######################################
+  # config-server:
+  #   build: ../config-server
+  #   container_name: config_server
+  #   ports:
+  #     - "8888:8888"
+  #   environment:
+  #     - SPRING_PROFILES_ACTIVE=native
+  #     - SPRING_CLOUD_CONFIG_SERVER_NATIVE_SEARCH_LOCATIONS=/config-repo
+  #   volumes:
+  #     - ../my-config-repo-habit-tracker:/config-repo
+  #   depends_on:
+  #     - rabbitmq
+
+  # discovery-server:
+  #   build: ../discovery-server
+  #   container_name: discovery_server
+  #   ports:
+  #     - "8761:8761"
+  #   depends_on:
+  #     - config-server
+
+  # ######################################
+  # # 🚪 API GATEWAY
+  # ######################################
+  # api-gateway:
+  #   build: ../api-gateway
+  #   container_name: api_gateway
+  #   ports:
+  #     - "8080:8080"
+  #   depends_on:
+  #     - discovery-server
+  #     - config-server
+  #     - rabbitmq
+
+volumes:
+  redis_data:
+  rabbit_data:

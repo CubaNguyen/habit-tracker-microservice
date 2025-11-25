@@ -1,0 +1,49 @@
+users (
+    id	 INT PRIMARY KEY AUTO_INCREMENT,          -- ID user
+    email 		VARCHAR(255) NOT NULL UNIQUE,         -- Email dùng login
+    password	 VARCHAR(255) NOT NULL,             -- Mật khẩu đã hash
+    is_email_verified		 BOOLEAN DEFAULT FALSE,    -- Email đã xác thực chưa
+    profile_complete		 BOOLEAN DEFAULT FALSE,     -- Profile đã hoàn thiện chưa
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+profiles (
+    id	 INT PRIMARY KEY AUTO_INCREMENT,
+    user_id 		INT NOT NULL UNIQUE,                 -- 1-1 với users
+    full_name 	VARCHAR(255),
+    avatar_url	 VARCHAR(255),
+    bio 	TEXT,
+    timezone 	VARCHAR(50),                        -- Múi giờ người dùng
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+sessions (
+    id	 INT PRIMARY KEY AUTO_INCREMENT,
+    user_id 		INT NOT NULL,                        -- FK tới users
+    refresh_token 	VARCHAR(255) NOT NULL,         -- Refresh token
+    expires_at DATETIME 	NOT NULL,                -- Hết hạn token
+    user_agent	 VARCHAR(255),                     -- Thông tin thiết bị
+    ip_address	 VARCHAR(50),                      -- IP đăng nhập
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+verification_codes (
+    id	 INT PRIMARY KEY AUTO_INCREMENT,
+    user_id		 INT NOT NULL,
+    code		 VARCHAR(10) NOT NULL,                   -- Mã xác thực
+    type ENUM('email_verification', 'password_reset', '2fa')	 NOT NULL,
+    expires_at 	DATETIME NOT NULL,                -- Hạn sử dụng mã
+    used 		BOOLEAN DEFAULT FALSE,                  -- Đã sử dụng chưa
+    created_at 	DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+
+{ message:  ,code:  });  // nếu có lỗi
+
+return {
+    message:
+    data
+  };                     // nếu thành công
+
