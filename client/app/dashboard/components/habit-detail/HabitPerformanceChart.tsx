@@ -13,14 +13,6 @@ import {
 import dayjs from "dayjs";
 
 export default function HabitPerformanceChart({ history }: { history: any[] }) {
-  // HISTORY dạng:
-  // [
-  //   { date: "2025-11-16", status: "FAIL" },
-  //   { date: "2025-11-14", status: "SKIP" },
-  //   { date: "2025-11-13", status: "COMPLETE" }
-  // ]
-
-  // Convert về dạng chart data
   const chartData = history
     .map((h) => ({
       date: dayjs(h.date).format("MMM DD"),

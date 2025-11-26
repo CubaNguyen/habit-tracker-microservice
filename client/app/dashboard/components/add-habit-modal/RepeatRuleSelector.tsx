@@ -1,13 +1,7 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import { ChevronDown } from "lucide-react";
-
-type RepeatType = "DAILY" | "WEEKLY" | "MONTHLY" | "CUSTOM";
-
-interface RepeatRule {
-  repeatType: RepeatType;
-  repeatValue: string | null; // JSON string (BE yêu cầu)
-}
+import type { RepeatRule, RepeatType } from "@/lib/types/habit/repeat-rule";
 
 interface Props {
   onChange: (rule: RepeatRule) => void;

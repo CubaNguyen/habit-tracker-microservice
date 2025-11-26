@@ -9,58 +9,24 @@ import {
 } from "react";
 import dayjs, { Dayjs } from "dayjs";
 import { habitApi } from "@/lib/api/habit";
+import type { HabitListItem, HabitListContextState } from "@/lib/types/habit";
 
 // =============================
 // 🔥 TYPES
 // =============================
-export interface HabitListItem {
-  habitId: string;
-  name: string;
-  status: "ACTIVE" | "COMPLETE" | "FAIL" | "SKIP";
-  unit?: string;
-  targetAmount?: number;
-  icon?: string;
-}
 
-export interface HabitListGroups {
-  today: HabitListItem[];
-  completed: HabitListItem[];
-  failed: HabitListItem[];
-  skipped: HabitListItem[];
-}
-
-interface HabitListContextState {
-  date: Dayjs;
-  setDate: (d: Dayjs) => void;
-
-  habits: HabitListGroups;
-  loading: boolean;
-
-  reload: () => void;
-}
-
-// =============================
-// 🔥 CONTEXT
-// =============================
 const HabitListContext = createContext<HabitListContextState | undefined>(
   undefined
 );
 
 // =============================
-// 🔥 PROVIDER
+// 🔥 PROVIDER (CLEAN VERSION)
 // =============================
 export function HabitListProvider({ children }: { children: ReactNode }) {
   const [date, setDate] = useState<Dayjs>(dayjs());
   const [loading, setLoading] = useState<boolean>(true);
-
-  const [habits, setHabits] = useState<HabitListGroups>({
-    today: [],
-    completed: [],
-    failed: [],
-    skipped: [],
-  });
-
-  // Load habits for a specific day
+  const [habits, setHabits] = useState<HabitListItem[]>([]);
+  // Load habits for selected day
   const loadHabits = async (d: Dayjs = date) => {
     try {
       setLoading(true);
@@ -68,23 +34,21 @@ export function HabitListProvider({ children }: { children: ReactNode }) {
       const ds = d.format("YYYY-MM-DD");
       const res = await habitApi.getByDate(ds);
 
-      // ✅ 1) Lấy đúng mảng habits trong ApiResponse
       const rawList = res?.data?.data ?? res?.data ?? [];
 
-      // ✅ 2) Normalize: nếu backend chưa trả status thì coi như ACTIVE
-      const list: HabitListItem[] = rawList.map((h: any) => ({
-        ...h,
+      const formatted: HabitListItem[] = rawList.map((h: any) => ({
+        habitId: h.habitId,
+        name: h.name,
         status: h.status ?? "ACTIVE",
+        unit: h.unit,
+        targetAmount: h.targetAmount,
+        icon: h.icon ?? "📌",
       }));
 
-      setHabits({
-        today: list.filter((h) => h.status === "ACTIVE"),
-        completed: list.filter((h) => h.status === "COMPLETE"),
-        failed: list.filter((h) => h.status === "FAIL"),
-        skipped: list.filter((h) => h.status === "SKIP"),
-      });
+      setHabits(formatted);
     } catch (err) {
       console.error("❌ Load habits error:", err);
+      setHabits([]);
     } finally {
       setLoading(false);
     }
@@ -110,7 +74,7 @@ export function HabitListProvider({ children }: { children: ReactNode }) {
 }
 
 // =============================
-// 🔥 CUSTOM HOOK
+// 🔥 Custom Hook
 // =============================
 export function useHabitList() {
   const ctx = useContext(HabitListContext);

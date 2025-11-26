@@ -10,84 +10,13 @@ import {
 import dayjs from "dayjs";
 import { habitApi } from "@/lib/api/habit";
 import { progressApi } from "@/lib/api/progress";
-
-// =======================
-// TYPES
-// =======================
-interface HabitInfo {
-  habitId: string;
-  name: string;
-  unit: string;
-  targetAmount: number;
-  startDate: string;
-  endDate: string | null;
-
-  categoryName: string | null;
-  tagNames: string[];
-  repeatRule: any;
-  milestones: any[];
-}
-
-interface HabitProgressDay {
-  date: string;
-  status: string;
-  progressValue: number | null;
-}
-
-interface HabitProgress {
-  habitId: string;
-  streak: number;
-  totalProgress: number;
-  days: HabitProgressDay[];
-}
-
-export interface MergedHabit {
-  habitId: string;
-  name: string;
-  unit: string;
-  targetAmount: number;
-  categoryName: string | null;
-  tagNames: string[];
-  repeatRule: any;
-  milestones: any[];
-  startDate: string;
-
-  streak: number;
-  totalProgress: number;
-  days: HabitProgressDay[];
-}
-
-// =======================
-// CONTEXT STATE
-// =======================
-interface HabitGridContextState {
-  loading: boolean;
-  habits: MergedHabit[];
-  range: { from: string; to: string };
-
-  refresh: () => void;
-
-  // actions
-  complete: (
-    habitId: string,
-    date: string,
-    progressValue?: number,
-    notes?: string
-  ) => Promise<void>;
-  skip: (habitId: string, date: string, notes?: string) => Promise<void>;
-  fail: (habitId: string, date: string) => Promise<void>;
-  reset: (habitId: string, date: string) => Promise<void>;
-
-  // selection
-  selectedCell: { habitId: string | null; date: string | null } | null;
-  selectCell: (habitId: string, date: string) => void;
-  clearSelection: () => void;
-
-  executeAction: (
-    type: "complete" | "skip" | "fail" | "reset",
-    payload?: { progressValue?: number; notes?: string }
-  ) => Promise<void>;
-}
+import type {
+  HabitInfo,
+  HabitProgress,
+  HabitProgressDay,
+  MergedHabit,
+  HabitGridContextState,
+} from "@/lib/types/habit";
 
 const HabitGridContext = createContext<HabitGridContextState | undefined>(
   undefined

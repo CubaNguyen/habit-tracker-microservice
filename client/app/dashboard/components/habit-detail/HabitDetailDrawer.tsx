@@ -59,7 +59,7 @@ export default function HabitDetailDrawer({
                   {habit.icon || "📌"} {habit?.name}
                 </div>
                 <div className="text-neutral-400 text-sm mt-1">
-                  {habit.repeatRule?.repeatType || "Daily"}
+                  {habit?.repeatRule?.repeatType || "Daily"}
                 </div>
               </div>
               <button

@@ -1,8 +1,8 @@
 "use client";
 import TopBar from "@/components/TopBar";
-import HabitGrid from "@/app/dashboard/components/HabitGrid";
+import HabitGrid from "@/app/dashboard/components/habit-grid/HabitGrid";
 import { useView } from "./context/ViewContext";
-import HabitList from "@/app/dashboard/components/HabitList";
+import HabitList from "@/app/dashboard/components/habit-list/HabitList";
 
 export default function DashboardPage() {
   const { view } = useView();

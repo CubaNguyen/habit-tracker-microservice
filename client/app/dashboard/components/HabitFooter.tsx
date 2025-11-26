@@ -50,7 +50,7 @@ export default function HabitFooter() {
             className="flex items-center gap-1 px-3 hover:text-yellow-400 transition-all"
           >
             <RotateCcw size={16} />
-            <span>Reset</span>
+            <span>Undo</span>
           </button>
 
           {/* COMPLETE → mở modal */}

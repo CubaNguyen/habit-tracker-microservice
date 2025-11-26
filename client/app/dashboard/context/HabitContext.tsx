@@ -1,52 +1,7 @@
 "use client";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { habitApi } from "@/lib/api/habit";
-
-type RepeatRule = {
-  repeatType: "DAILY" | "WEEKLY" | "MONTHLY" | "CUSTOM";
-  repeatValue: string | null;
-};
-
-// 🟩 Request type: FE gửi đi
-export interface HabitRequest {
-  name: string;
-  unit: string;
-  targetAmount: number;
-  startDate: string;
-  endDate?: string;
-  categoryId?: string | null;
-  tagIds?: string[];
-  repeatRule: RepeatRule;
-  milestones?: any[];
-}
-
-// 🟩 Response type: BE trả về
-export interface Habit {
-  habitId: string;
-  userId: number;
-  name: string;
-  unit: string;
-  targetAmount: number;
-  startDate: string;
-  endDate?: string;
-  categoryId?: string | null;
-  categoryName?: string | null;
-  tagNames?: string[];
-  repeatRule: {
-    repeatType: "DAILY" | "WEEKLY" | "MONTHLY" | "CUSTOM";
-    repeatValue: string | null;
-  };
-  milestones?: any[];
-}
-
-interface HabitContextType {
-  habits: Habit[];
-  loading: boolean;
-  refreshHabits: () => Promise<void>;
-  createHabit: (data: HabitRequest) => Promise<Habit | null>;
-  updateHabit: (id: string, data: Partial<HabitRequest>) => Promise<void>;
-  deleteHabit: (id: string) => Promise<void>;
-}
+import type { Habit, HabitRequest, HabitContextType } from "@/lib/types/habit";
 
 const HabitContext = createContext<HabitContextType | null>(null);
 

@@ -2,7 +2,7 @@
 
 import clsx from "clsx";
 import dayjs, { Dayjs } from "dayjs";
-import { useHabitGrid } from "../context/HabitGridContext";
+import { useHabitGrid } from "../../context/HabitGridContext";
 
 interface HabitRowProps {
   habit: any;

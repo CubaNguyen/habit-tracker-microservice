@@ -5,10 +5,10 @@ import { Menu } from "lucide-react";
 import dayjs from "dayjs";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 
-import HabitModal from "./add-habit-modal/HabitModal";
+import HabitModal from "../add-habit-modal/HabitModal";
 import HabitRow from "./HabitRow";
-import { useHabitGrid } from "../context/HabitGridContext";
-import HabitDetailDrawer from "./habit-detail/HabitDetailDrawer";
+import { useHabitGrid } from "../../context/HabitGridContext";
+import HabitDetailDrawer from "../habit-detail/HabitDetailDrawer";
 import { progressApi } from "@/lib/api";
 
 dayjs.extend(isSameOrBefore);

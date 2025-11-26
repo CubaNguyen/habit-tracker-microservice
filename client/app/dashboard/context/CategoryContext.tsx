@@ -1,16 +1,9 @@
 "use client";
+
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { categoryApi } from "@/lib/api/habit";
-
-type Category = { id: string; name: string };
-
-interface CategoryContextType {
-  categories: Category[];
-  loading: boolean;
-  refreshCategories: () => Promise<void>;
-  createCategory: (name: string) => Promise<Category | null>;
-  deleteCategory: (id: string) => Promise<void>;
-}
+import type { Category } from "@/lib/types/habit/category";
+import type { CategoryContextType } from "@/lib/types/habit/category-context";
 
 const CategoryContext = createContext<CategoryContextType | null>(null);
 

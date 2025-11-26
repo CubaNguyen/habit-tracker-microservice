@@ -1,100 +1,11 @@
-// "use client";
-// import { useState } from "react";
-// import { Plus, Trash } from "lucide-react";
-
-// export interface Milestone {
-//   name: string;
-//   target_amount: number;
-// }
-
-// export default function MilestoneInput({
-//   onChange,
-// }: {
-//   onChange?: (milestones: Milestone[]) => void;
-// }) {
-//   const [milestones, setMilestones] = useState<Milestone[]>([]);
-//   const [newValue, setNewValue] = useState("");
-
-//   // 👉 Cập nhật list milestone & báo cho cha biết
-//   const updateMilestones = (newList: Milestone[]) => {
-//     setMilestones(newList);
-//     onChange?.(newList);
-//   };
-
-//   // 👉 Thêm milestone
-//   const handleAdd = () => {
-//     if (!newValue.trim()) return;
-//     const value = newValue.trim();
-//     const numeric = parseFloat(value.replace(/[^\d.]/g, "")) || 0;
-//     updateMilestones([...milestones, { name: value, target_amount: numeric }]);
-//     setNewValue("");
-//   };
-
-//   // 👉 Xóa milestone (UI only)
-//   const handleDelete = (index: number) => {
-//     const updated = milestones.filter((_, i) => i !== index);
-//     updateMilestones(updated);
-//   };
-
-//   return (
-//     <div>
-//       <label className="block text-gray-400 mb-2">Milestones (optional)</label>
-
-//       {/* Danh sách milestone */}
-//       <div className="flex flex-col gap-2">
-//         {milestones.length === 0 ? (
-//           <div className="text-gray-500 text-sm italic">
-//             No milestones added
-//           </div>
-//         ) : (
-//           milestones.map((m, i) => (
-//             <div
-//               key={i}
-//               className="flex items-center justify-between bg-[#2a2a2a] rounded-md px-3 py-2"
-//             >
-//               <span>{m.name}</span>
-//               <Trash
-//                 size={16}
-//                 className="text-gray-400 cursor-pointer hover:text-red-400"
-//                 onClick={() => handleDelete(i)}
-//               />
-//             </div>
-//           ))
-//         )}
-//       </div>
-
-//       {/* Ô nhập thêm */}
-//       <div className="mt-3 flex items-center gap-2">
-//         <input
-//           type="text"
-//           value={newValue}
-//           onChange={(e) => setNewValue(e.target.value)}
-//           placeholder="e.g. 200 km"
-//           className="flex-1 px-3 py-2 bg-[#121212] border border-[#333] rounded-md focus:border-blue-500 focus:outline-none text-gray-100 text-sm"
-//         />
-//         <button
-//           onClick={handleAdd}
-//           className="flex items-center gap-1 text-blue-500 hover:underline text-sm"
-//         >
-//           <Plus size={16} /> Add milestone
-//         </button>
-//       </div>
-//     </div>
-//   );
-// }
-
 "use client";
 import { useState } from "react";
 import { Plus, Trash } from "lucide-react";
-
-export interface Milestone {
-  name: string;
-  target_amount?: number; // optional
-}
+import type { Milestone } from "@/lib/types/habit/milestone";
 
 interface MilestoneInputProps {
   onChange?: (milestones: Milestone[]) => void;
-  showTarget?: boolean; // ✅ nếu true => hiển thị cột target
+  showTarget?: boolean;
 }
 
 export default function MilestoneInput({
